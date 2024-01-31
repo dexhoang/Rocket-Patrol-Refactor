@@ -26,7 +26,7 @@ class newSpaceship extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame)
         scene.add.existing(this) 
         this.points = pointValue
-        this.moveSpeed = 5
+        this.moveSpeed = 8
     }
 
     update() {

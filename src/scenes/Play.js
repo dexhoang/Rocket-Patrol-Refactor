@@ -51,19 +51,33 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5) 
             this.gameOver = true 
         }, null, this)
-        //background music 
+
+        //background music
         this.sound.play('driftveil', {volume: 0.3})
+
+        //display timer
+        this.timer = 0
+        this.timeText = this.add.text(478, borderUISize + borderPadding*2, 'TIME:', scoreConfig)
+        this.timeNum = this.add.text(563, borderUISize + borderPadding*2, this.timer, scoreConfig)
     }
 
     update() {
+        //timer & update time text
+        this.remaining = this.clock.getRemaining()
+        this.round = (Math.round(this.remaining)/1000).toFixed(0)
+        this.timeNum.text = this.round
+
         //check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyRESET)) {
             this.game.sound.stopAll()
             this.scene.restart()
         }
 
+        //parallax scrolling
         this.starfield.tilePositionX -= 1
         this.cities.tilePositionX -= 4
+
+
         if (!this.gameOver) {
             this.p1Rocket.update()
             this.ship01.update()
@@ -87,7 +101,7 @@ class Play extends Phaser.Scene {
         }
         if (this.checkCollision(this.p1Rocket, this.ship04)) {
             this.p1Rocket.reset()
-            this.shipExplode(this.ship04)
+            this.ufoExplode(this.ship04)
         }
     }
 
@@ -99,6 +113,15 @@ class Play extends Phaser.Scene {
             } else {
                 return false
             }
+    }
+
+    animationShip(ship) {
+        ship.alpha = 0
+        let ships = this.add.sprite(ship.x, ship.y, 'spaceshit').setOrigin(0, 0);
+        ships.anims.play('spaceshit', true)
+        ships.on('animationcomplete', () => {
+            ships.destroy()
+        })
     }
 
     shipExplode(ship) {
@@ -116,6 +139,41 @@ class Play extends Phaser.Scene {
         this.p1Score += ship.points
         this.scoreLeft.text = this.p1Score
 
-        this.sound.play('sfx-explosion')
+        //play different random explosion sound effect
+        var value = Phaser.Math.Between(0, 4)
+        if (value == 0) {
+            this.sound.play('sfx-explosion')
+        }
+        if (value == 1) {
+            this.sound.play('newexplode1')
+        }
+        if (value == 2) {
+            this.sound.play('newexplode2')
+        }
+        if (value == 3) {
+            this.sound.play('newexplode3')
+        }
+        if (value == 4) {
+            this.sound.play('newexplode4')
+        }
+    }
+
+    ufoExplode(ship) {
+        //temporarily hide ship
+        ship.alpha = 0
+        //create explosion sprite at ship's position
+        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+        boom.anims.play('explode')
+        boom.on('animationcomplete', () => {
+            ship.reset()
+            ship.alpha = 1
+            boom.destroy()
+        })
+        //score add and text update
+        this.p1Score += ship.points
+        this.scoreLeft.text = this.p1Score
+
+        //play different random explosion sound effect
+        this.sound.play('ufo')
     }
 }

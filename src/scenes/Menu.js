@@ -20,12 +20,25 @@ class Menu extends Phaser.Scene {
             endFrame: 9
         })
 
+        //load spaceship spritesheet
+        this.load.spritesheet('animspaceship', './assets/spaceshipsprite.png', {
+            frameWidth: 64,
+            frameHeight: 32,
+            startFrame: 0,
+            endFrame: 3
+        })
+
         //load audio
         this.load.audio('sfx-select', './assets/sfx-select.wav')
         this.load.audio('sfx-explosion', './assets/sfx-explosion.wav')
         this.load.audio('sfx-shot', './assets/sfx-shot.wav')      
         this.load.audio('driftveil', './assets/driftveilcity.mp3')
         this.load.audio('oof', './assets/oof.mp3')  
+        this.load.audio('newexplode1', './assets/newexplosion1.wav')
+        this.load.audio('newexplode2', './assets/newexplosion2.wav')
+        this.load.audio('newexplode3', './assets/newexplosion3.wav')
+        this.load.audio('newexplode4', './assets/newexplosion4.wav')
+        this.load.audio('ufo', './assets/ufo.wav')
     }
 
     create() {
@@ -33,8 +46,16 @@ class Menu extends Phaser.Scene {
         this.anims.create({
             key: 'explode',
             frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 9, first: 0}),
-            frameRate: 30
+            frameRate: 30,
         })
+
+        //scraped spaceship animation :(
+        // this.anims.create({
+        //     key: 'space',
+        //     frames: this.anims.generateFrameNumbers('animspaceship', {start: 0, end: 3, first: 0}),
+        //     frameRate: 5,
+        //     repeat: -1
+        // })
 
         //title screen background
         this.add.image(320, 240, 'title')
@@ -99,16 +120,16 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             //easy mode
             game.settings = {
-                spaceshipSpeed: 3,
+                spaceshipSpeed: 4,
                 gameTimer: 60000
             }
             this.sound.play('sfx-select')
             this.scene.start('playScene')
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
-            //easy mode
+            //expert mode
             game.settings = {
-                spaceshipSpeed: 4,
+                spaceshipSpeed: 5,
                 gameTimer: 45000
             }
             this.sound.play('sfx-select')
