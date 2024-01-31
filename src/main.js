@@ -1,6 +1,6 @@
 //Name: Dexter Hoang
 //Title: Rocket Patrol: City Lights Edition
-//Time worked: 8 hrs
+//Time worked: 14 hrs
 //Mods:
 //  -Create a new scrolling tile sprite for the background (1)
 //  -Implement parallax scrolling for the background (3)
@@ -9,8 +9,8 @@
 //  -Create a new title screen (e.g., new artwork, typography, layout) (3)
 //  -Allow the player to control the Rocket after it's fired (1)
 //  -Create 4 new explosion sound effects and randomize which one plays on impact (3)
-//  -
-//TOTAL POINTS: 
+//  -Display the time remaining (in seconds) on the screen (3)
+//TOTAL POINTS: 20
 
 let config = {
     type: Phaser.AUTO,
